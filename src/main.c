@@ -8,6 +8,7 @@ int main() {
     char input[MAX_LENGTH];
     
     // Display a prompt for the user
+    printf("Enter a word, or 'exit' to exit\n");
     printf(">> ");
     
     // Continue looping indefinitely until the program is manually terminated
@@ -20,10 +21,21 @@ int main() {
         //Read user input and store it in the 'input' array
         fgets(input, sizeof(input), stdin);
         
+        // function returns the index of the first character found
+        // Remove the trailing newline character from the input to check against "exit" later
+        input[strcspn(input, "\n")] = '\0';
+        
         // Display the user input
-        printf("You entered: %s", input);
+        printf("You entered: %s\n", input);
+        
+        // Check if the input is "exit" and break out of the loop if true
+        if (strcmp(input, "exit") == 0) {
+            printf("Goodbye!\n");
+            break;
+        }
         
         // Display the prompt for the next input
+        printf("Enter a word, or 'exit' to exit\n");
         printf(">> ");
     }
     
