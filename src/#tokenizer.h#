@@ -24,58 +24,14 @@ int non_space_char(char c){
   return (c != ' ' && c != '\t' && c != '\0');
 }
 
-/* Returns a pointer to the first character of the next
-   space-separated token in zero-terminated str. Return a zero pointer if
+/* Returns a pointer to the first character of the next 
+   space-separated token in zero-terminated str.  Return a zero pointer if 
    str does not contain any tokens. */
-char *token_start(char *str) {
-    // Declare a pointer variable "token" of type char*
-    char *pointer;
-
-    // Skip leading spaces in the string
-    while (*str == ' ') {
-        str++;
-    }
-
-    // Check if the string is empty or consists of only spaces
-    if (*str == '\0') {
-        // Return a null pointer as there are no tokens in the string
-        return NULL;
-    }
-
-    // Set pointer to the current position in the string
-    pointer = str;
-
-    // Find the end of the current token by searching for the next space or 0 character
-    while (*str != ' ' && *str != '\0') {
-        str++;
-    }
-
-    // Replace the space or null character with a null terminator
-    if (*str == ' ') {
-        *str = '\0';
-    }
-
-    // Return the pointer to the first character of the token
-    return pointer;
-}
+char *token_start(char *str); 
 
 /* Returns a pointer terminator char following *token */
-char *token_terminator(char *token) {
-    // Declare a pointer variable "terminator" of type char*
-    char *terminator;
+char *token_terminator(char *token);
 
-    // Set the "terminator" pointer to the same address as the "token" pointer
-    terminator = token;
-
-    // Loop through each character in the token until the end or a null character is encountered
-    while (*terminator != '\0') {
-        // Increment the "terminator" pointer to move to the next character
-        terminator++;
-    }
-
-    // Return the pointer to the null character following the token
-    return terminator;
-}
 /* Counts the number of tokens in the string argument. */
 int count_tokens(char *s) {
     int count = 0;
@@ -90,8 +46,7 @@ int count_tokens(char *s) {
             is_token = 0;
         }
         // Check if the current character (s[i]), is a letter
-        else if ((s[i] >= 'a' && s[i] <= 'z') ||
-                 (s[i] >= 'A' && s[i] <= 'Z') {
+        else if ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z') {
             if (is_token == 0) {
                 // Start of a new token
                 count++;
