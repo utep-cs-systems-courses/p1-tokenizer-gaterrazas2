@@ -14,7 +14,7 @@ int main(){
     
     // infinite loop for main menu
     while(1){
-        puts("-----Menu-----\n1)Tokenize\n2)History\nq)Quit");
+        puts("-----Menu-----\n1)Tokenize\n2)History\n3)Quit");
         putchar('>');
         fgets(input, MAX, stdin);
         // Declare a double pointer named tokens and assign the result of the tokenize() function to it
@@ -29,6 +29,7 @@ int main(){
             while(1){
                 putchar('>');
                 fgets(input, MAX, stdin);
+                printf("The amount of tokens is %d\n", count_tokens(input));
                 // Assign the result of the tokenize() function to tokens
                 tokens = tokenize(input);
                 // if string is empty
@@ -44,12 +45,13 @@ int main(){
                     add_history(list, input);
                     // Free the memory allocated for tokens
                     free_tokens(tokens);
+                    break;
                 }
             }
         } // end of Tokenize option
         // History option
         else if(*tokens[0] == '2'){
-            puts("-----History Menu-----\n1)View History\n#)for history at that id #\n3)q to quit");
+            puts("-----History Menu-----\nh)View History\n#)for history at that id #\nq)Quit");
             // Free the memory allocated for tokens
             free_tokens(tokens);
             // infinite loop
@@ -61,7 +63,7 @@ int main(){
                 tokens = tokenize(input);
                 
                 // if user selected to view history
-                if(*tokens[0] == '1'){
+                if(*tokens[0] == 'h'){
                     // Print the history of inputs
                     puts("Printing History...");
                     print_history(list);
@@ -83,7 +85,7 @@ int main(){
         } // end of history option
         
         // Check if the first character of the first token is 'q'
-        else if(*tokens[0] == 'q'){
+        else if(*tokens[0] == '3'){
             // Free the memory allocated for the history list
             free_history(list);
             // end program

@@ -68,7 +68,7 @@ char* get_history(List* list, int id) {
 // prints LL
 void print_history(List *list){
     Item *point = list->root;
-    point = point->next;
+    //point = point->next;
     while(point->next != NULL){
         printf("History: %d: %s", point->id, point->str);
         point = point->next;

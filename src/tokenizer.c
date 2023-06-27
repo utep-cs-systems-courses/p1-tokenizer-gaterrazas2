@@ -7,7 +7,7 @@
    ('\t' or ' ').
    Zero terminators are not printable (therefore false) */
 int space_char(char c){
-    if(c == ' ' || c == '\t'){
+    if(c == ' ' || c == '\t' && c != '\0'){
         if(c != '\0'){
           // char c is a space or tab and not a zero terminator
           return 1;
@@ -21,7 +21,7 @@ int space_char(char c){
    character (not tab or space).
    Zero terminators are not printable (therefore false) */
 int non_space_char(char c){
-    return (c != ' ' && c != '\t' && c != '\0');
+    return (c != ' ' && c != '\t' && c != '\0' && c != '\0');
 }
 
 /* Returns a pointer to the first character of the next
@@ -55,21 +55,20 @@ char *token_terminator(char *token){
 
 /* Counts the number of tokens in the string argument. */
 int count_tokens(char* str) {
-    // keep track of token count
-    int tokenCount = 0;
-    
-    // Loop until the end of the string ('\0') is reached
-    while (*str) {
-        // Check if the character is a newline, space, or tab
-        if (*str == '\n' || *str == ' ' || *str == '\t') {
-            // Increment the token count
-            tokenCount++;
+    int count = 1;
+      // set the pointer to the start of the input
+      str = token_start(str);
+      // loop until the end of the input
+      while(*str != '\0'){
+        if(non_space_char(*str)){
+        str++;
+       }else{
+            count++;
+            // set str to the start of the next word
+            str = token_start(str);
         }
-        // Move to the next character in the string
-        ++str;
-    }
-    // Return the final token count
-    return tokenCount;
+      }
+      return count;
 }
 
 
@@ -140,20 +139,22 @@ char **tokenize(char* str) {
 /* Prints all tokens. */
 void print_tokens(char **tokens){
     int i = 0;
-    while(*tokens[i] != '\0'){
+    while(tokens[i] != 0){
         printf("%s\n", tokens[i]);
         i++;
     }
-  
+    // Code breaks here
 }
 
 /* Frees all tokens and the array containing the tokens. */
 void free_tokens(char** tokens){
     int i = 0;
-    while (tokens[i] != NULL){
+    while (tokens[i] != 0){
         free(tokens[i]);
         i++;
     }
     free(tokens);
 }
 
+
+// fix count tokens
