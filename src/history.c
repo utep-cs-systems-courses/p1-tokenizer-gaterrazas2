@@ -4,56 +4,63 @@
 #include "history.h"
 #include "tokenizer.h"
 
-//initialize linked list
-List* init_history() {
-    // Allocate memory for the list
-    List* list = malloc(sizeof(List));
-    // Set the root node to NULL (empty list)
-    list->root = NULL;
-    // Return the initialized list
-    return list;
+//initialize linked list by initializing a root and adding it to be the start of a new empty list
+List *init_history(){
+    // initialize new Item struct
+    Item root;
+    // Set the id of 'root' to 0
+    root.id = 0;
+    // Set the root string equal to 'root'
+    root.str = "root\n";
+    // Allocate memory for an initialized pointer Item
+    Item *nodePointer = malloc(sizeof(struct s_Item));
+    // assign the pointer value to the root Item
+    *nodePointer = root;
+    // initialize new List struct
+    List list;
+    // Set the root of 'list' to the address stored in 'nodePointer' (storing the root)
+    list.root = nodePointer;
+    // Allocate memory for a new List struct pointer
+    List *llPointer = malloc(sizeof(struct s_List));
+    // Assign the value of the pointer to list
+    *llPointer = list;
+    // Return the pointer
+    return llPointer;
 }
 
-// add to the LL
-void add_history(List* list, char* str) {
-    // Allocate memory for a new history item
-    Item *temp = (Item*)malloc(sizeof(Item*) * 100);
-    // Assign the given string to the `str` field of the new item
-    temp->str = str;
-    // Initialize a counter variable
-    int c = 1;
-    
-    // Check if the list is empty
-    if (list->root == NULL) {
-        // Set the ID of the new item to the counter value
-        temp->id = c;
-        // Set the root of the list to the new item
-        list->root = temp;
+void add_history(List *list, char *str){
+    int count = 0;
+    // Point to the current root of the list
+    Item *curr = list->root;
+    // Create an item struct named tempNode
+    Item tempNode;
+    // Traverse the linked list
+    while(curr->next != 0){
+      // move to the next node
+      curr = curr->next;
     }
-    else {
-        // Create a pointer to iterate through the history items
-        Item *history = list->root;
-        // Set the ID of the new item to the counter value
-        temp->id = c;
-        
-        // Traverse the history items until the last item is reached
-        while (history->next != NULL) {
-          // Increment the ID of the new item by the counter value
-          temp->id += c;
-          // Move to the next history item
-          history = history->next;
-        }
-        // Assign the new item as the next item of the current last item
-        history->next = temp;
-        // Increment the ID of the new item by the counter value
-        temp->id += c;
+    // Set the id of 'tempNode' to the id of the current node + 1 (making tempNode the final node in the list)
+    tempNode.id = curr->id + 1;
+    // Iterate through the characters of the provided string until the null terminator is encountered
+    while(*str != '\0'){
+      count++;
+      // Move the pointer 'str' to the next character
+      str++;
     }
-}
+    // Move the pointer 'str' back to the start of the string
+    str -= count;
+    // Assign a copy of the substring of 'str' to 'node.str' using the 'copy_str' function
+    tempNode.str = copy_str(str, count);
+    // Allocate memory for the next node in the linked list
+    curr->next = malloc(sizeof(struct s_Item));
+    // Copy the values of 'tempNode' to the newly created node in the linked list
+    *(curr->next) = tempNode;
+    }
 
 // returns node given ID
 char* get_history(List* list, int id) {
     Item* curr = list->root;
-    while (curr != NULL) {
+    while (curr != 0) {
         if (curr->id == id) {
             // Return the string if ID matches
             return curr->str;
@@ -65,15 +72,25 @@ char* get_history(List* list, int id) {
     return NULL;
 }
 
-// prints LL
+//Print the LL
 void print_history(List *list){
-    Item *point = list->root;
-    //point = point->next;
-    while(point->next != NULL){
-        printf("History: %d: %s", point->id, point->str);
-        point = point->next;
+    Item *curr = list->root;
+    // Skip the first node created at initialization
+    curr = curr->next;
+    // for empty history
+    if(curr == 0){
+        puts("History is Empty");
     }
-    printf("%d: %s", point->id, point->str);
+    else{
+        // while not at the end of the list
+        while(curr->next != 0){
+            // print the current nodes ID and value
+            printf("Node #%d: %s", curr->id, curr->str);
+            curr = curr->next;
+        }
+        // print the final node
+        printf("Node #%d: %s", curr->id, curr->str);
+    }
 }
 
 // Free the LL
@@ -82,8 +99,6 @@ void free_history(List* list) {
     while (current != NULL) {
         // Store the next node
         Item* next = current->next;
-        // Free the string memory
-        free(current->str);
         // Free the item memory
         free(current);
         // Move to the next node

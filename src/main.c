@@ -76,10 +76,13 @@ int main(){
                     // Break out of the inner loop
                     break;
                 }
-                // if the user selected to view history by ID
-                else if((*tokens[0] - '0') > 0){
+                // convert to integer equivalent by subtracting 0
+                else if((**tokens - '0') > 0){
                     // Print the input history corresponding to the ID provided
-                    printf("%s", get_history(list, *tokens[0] - '0'));
+                    printf("%s", get_history(list, **tokens - '0'));
+                }
+                else{
+                    puts("invalid input");
                 }
             }
         } // end of history option
